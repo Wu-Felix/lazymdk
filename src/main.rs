@@ -4,6 +4,7 @@ use std::{
     path::PathBuf,
 };
 
+use clap::Parser;
 use duct::cmd;
 trait FindFile {
     fn find_git_root(&self) -> Result<PathBuf> {
@@ -73,7 +74,20 @@ impl LazyMdk {
         Ok(())
     }
 }
+#[derive(Parser)]
+#[command(version, author, about, long_about = None)]
+struct Cli {
+    /// Specify your name
+    cmd: Option<String>,
+}
 fn main() {
     let lazy_mdk = LazyMdk {};
     lazy_mdk.print_git_root();
+    let cli = Cli::parse();
+    if let Some(s) = cli.cmd {
+        let cmd = format!("-{}", s);
+        let _ = lazy_mdk.mdk_cmd(&cmd);
+    } else {
+        let _ = lazy_mdk.mdk_cmd("");
+    }
 }
