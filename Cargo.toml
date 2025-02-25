@@ -1,6 +1,6 @@
 [package]
 name = "lazymdk"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 description ="通过命令行使用mdk"
 license = "MIT OR Apache-2.0"
