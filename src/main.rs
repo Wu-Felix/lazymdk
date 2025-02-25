@@ -55,8 +55,19 @@ impl LazyMdk {
             let build = parent_path.join("build.log");
             let build_str = build.to_str();
             if let Some(build_pwd) = build_str {
-                cmd!("uv4", "-j0", cmd, &path_list[0], "-o", build_pwd).read()?;
-                cmd!("bat", build_pwd).run()?;
+                match cmd {
+                    "-d" => {
+                        cmd!("uv4", cmd, &path_list[0], "-o", build_pwd).run()?;
+                    }
+                    "-f" | "-b" => {
+                        cmd!("uv4", cmd, &path_list[0], "-o", build_pwd).run()?;
+                        cmd!("bat", build_pwd).run()?;
+                    }
+                    "" => {
+                        cmd!("uv4", &path_list[0]).run()?;
+                    }
+                    _ => {}
+                }
             }
         }
         Ok(())
