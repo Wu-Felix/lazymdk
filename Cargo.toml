@@ -2,6 +2,8 @@
 name = "lazymdk"
 version = "0.1.0"
 edition = "2021"
+description ="通过命令行使用mdk"
+license = "MIT OR Apache-2.0"
 
 [dependencies]
 duct = "0.13.7"
