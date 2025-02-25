@@ -48,6 +48,20 @@ trait FindFile {
 
 struct LazyMdk {}
 impl<U> FindFile for U {}
+impl LazyMdk {
+    fn mdk_cmd(&self, cmd: &str) -> Result<()> {
+        let path_list = self.find_git_root_file("uvprojx")?;
+        if let Some(parent_path) = path_list[0].parent() {
+            let build = parent_path.join("build.log");
+            let build_str = build.to_str();
+            if let Some(build_pwd) = build_str {
+                cmd!("uv4", "-j0", cmd, &path_list[0], "-o", build_pwd).read()?;
+                cmd!("bat", build_pwd).run()?;
+            }
+        }
+        Ok(())
+    }
+}
 fn main() {
     let lazy_mdk = LazyMdk {};
     lazy_mdk.print_git_root();
